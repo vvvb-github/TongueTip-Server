@@ -1,9 +1,8 @@
-package cn.com.seu.tonguetip.admin.controller;
+package cn.com.seu.tonguetip.server.controller;
 
-
-import cn.com.seu.tonguetip.admin.entity.UserCheck;
-import cn.com.seu.tonguetip.admin.service.IUserCheckService;
-import cn.com.seu.tonguetip.admin.service.IUserService;
+import cn.com.seu.tonguetip.server.entity.UserCheck;
+import cn.com.seu.tonguetip.server.service.IUserCheckService;
+import cn.com.seu.tonguetip.server.service.IUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = {"http://localhost:8080"},allowCredentials = "true")
+@CrossOrigin(origins = "*",allowCredentials = "true")
 public class AdminController {
 
     @Autowired
@@ -92,18 +91,16 @@ public class AdminController {
         System.out.println(multipartFile);
         JSONObject jsonObject = new JSONObject();
         try {
-            String serverPath = System.getProperty("user.dir") + "/image/";
+            String serverPath = System.getProperty("user.dir") + "/images/";
             String uuid = UUID.randomUUID()	.toString();
             String suffixName = multipartFile.getOriginalFilename().
                     substring(multipartFile.getOriginalFilename().lastIndexOf("."));
             String path = serverPath + uuid + suffixName;
             File newFile = new File(path);
             multipartFile.transferTo(newFile);
-            jsonObject.put("status",1);
-            path = IP + "/image/" + uuid + suffixName;
+            path = IP + "/images/" + uuid + suffixName;
             jsonObject.put("url",path);
         }catch (Exception e){
-            jsonObject.put("status",0);
             jsonObject.put("errmsg",e.getMessage());
         }
         return jsonObject;

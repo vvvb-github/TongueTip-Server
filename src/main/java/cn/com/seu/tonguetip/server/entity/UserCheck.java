@@ -1,4 +1,4 @@
-package cn.com.seu.tonguetip.admin.entity;
+package cn.com.seu.tonguetip.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author five_dumplings
- * @since 2020-07-22
+ * @since 2020-07-24
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -38,8 +38,8 @@ public class UserCheck implements Serializable {
     @TableField("PictruePath")
     private String PictruePath;
 
-    public String getPictruePath() {
-        return PictruePath;
+    public Integer getUserID() {
+        return UserID;
     }
 
     public LocalDateTime getTime() {
@@ -50,7 +50,23 @@ public class UserCheck implements Serializable {
         return CheckID;
     }
 
-    public Integer getUserID() {
-        return UserID;
+    public String getPictruePath() {
+        return PictruePath;
+    }
+
+    public void setUserID(Integer userID) {
+        UserID = userID;
+    }
+
+    public void setTime(LocalDateTime time) {
+        Time = time;
+    }
+
+    public void setCheckID(Integer checkID) {
+        CheckID = checkID;
+    }
+
+    public void setPictruePath(String pictruePath) {
+        PictruePath = pictruePath;
     }
 }

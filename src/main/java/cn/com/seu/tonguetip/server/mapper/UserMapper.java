@@ -1,6 +1,6 @@
-package cn.com.seu.tonguetip.admin.mapper;
+package cn.com.seu.tonguetip.server.mapper;
 
-import cn.com.seu.tonguetip.admin.entity.User;
+import cn.com.seu.tonguetip.server.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author five_dumplings
- * @since 2020-07-22
+ * @since 2020-07-24
  */
 public interface UserMapper extends BaseMapper<User> {
 

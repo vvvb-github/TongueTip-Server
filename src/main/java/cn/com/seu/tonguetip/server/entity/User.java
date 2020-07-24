@@ -1,4 +1,4 @@
-package cn.com.seu.tonguetip.admin.entity;
+package cn.com.seu.tonguetip.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author five_dumplings
- * @since 2020-07-22
+ * @since 2020-07-24
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -46,35 +46,59 @@ public class User implements Serializable {
     @TableField("IconPath")
     private String IconPath;
 
-    public Integer getUserID() {
-        return UserID;
-    }
-
-    public Integer getPriority() {
-        return Priority;
-    }
-
-    public String getIconPath() {
-        return IconPath;
-    }
-
-    public Integer getType() {
-        return Type;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
     public String getPhoneNumber() {
         return PhoneNumber;
+    }
+
+    public Integer getUserID() {
+        return UserID;
     }
 
     public String getUserName() {
         return UserName;
     }
 
+    public String getPassword() {
+        return Password;
+    }
+
+    public Integer getType() {
+        return Type;
+    }
+
+    public String getIconPath() {
+        return IconPath;
+    }
+
+    public Integer getPriority() {
+        return Priority;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    public void setUserID(Integer userID) {
+        UserID = userID;
+    }
+
     public void setType(Integer type) {
         Type = type;
+    }
+
+    public void setIconPath(String iconPath) {
+        IconPath = iconPath;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public void setPriority(Integer priority) {
+        Priority = priority;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
     }
 }

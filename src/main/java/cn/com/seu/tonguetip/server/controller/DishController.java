@@ -77,7 +77,6 @@ public class DishController {
             List<JSONObject> tempList = new ArrayList<>();
             if (dish != null) {
                 for (Comment comment : commentList) {
-
                     JSONObject temp = new JSONObject();
                     User user = userService.getUser(comment.getUserID());
                     temp.put("ID", comment.getCommentID());
@@ -125,6 +124,7 @@ public class DishController {
         }
         return jsonObj;
     }
+
     @RequestMapping(value="/edit",method= RequestMethod.POST)
     public JSONObject editDishInfo(Integer dishID, String imgList, String dishName, Double price, String tagList) {
         JSONObject jsonObj = new JSONObject();
@@ -143,6 +143,7 @@ public class DishController {
         }
         return jsonObj;
     }
+
     @RequestMapping(value="/addcomment",method= RequestMethod.POST)
     public JSONObject addNewComment(Integer userID, String comment,Integer star,Integer dishID) {
         JSONObject jsonObj = new JSONObject();

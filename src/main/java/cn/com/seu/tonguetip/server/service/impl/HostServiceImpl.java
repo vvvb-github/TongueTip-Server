@@ -97,4 +97,17 @@ public class HostServiceImpl extends ServiceImpl<HostMapper, Host> implements IH
         Host host = getOne(wrapper);
         return host.getLocation();
     }
+
+    @Override
+    public void newHost(Integer userID) {
+        Host host = new Host();
+        host.setUserID(userID);
+        host.setHostName("无店名");
+        host.setIntroduction("暂无简介");
+        host.setLocation("地点未知");
+        host.setPhoneNumber("暂无联系方式");
+        host.setStar(0.0);
+        host.setPicturePath("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595617094864&di=c14184908466a235d5215facc406a051&imgtype=0&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D2952589939%2C4283534615%26fm%3D214%26gp%3D0.jpg");
+        save(host);
+    }
 }

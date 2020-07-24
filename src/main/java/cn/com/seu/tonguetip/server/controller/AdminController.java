@@ -1,6 +1,7 @@
 package cn.com.seu.tonguetip.server.controller;
 
 import cn.com.seu.tonguetip.server.entity.UserCheck;
+import cn.com.seu.tonguetip.server.service.IHostService;
 import cn.com.seu.tonguetip.server.service.IUserCheckService;
 import cn.com.seu.tonguetip.server.service.IUserService;
 import net.sf.json.JSONObject;
@@ -33,6 +34,9 @@ public class AdminController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IHostService hostService;
+
     private String IP = "http://192.168.0.110";
 
     @RequestMapping(value = "/get",method = RequestMethod.GET)
@@ -63,6 +67,7 @@ public class AdminController {
             Integer userID = checkService.getUserIDByCheckID(checkID);
             userService.acceptCheck(userID);
             checkService.deleteCheckByID(checkID);
+            hostService.newHost(userID);
             jsonObject.put("status",1);
         }catch (Exception e){
             jsonObject.put("status",0);

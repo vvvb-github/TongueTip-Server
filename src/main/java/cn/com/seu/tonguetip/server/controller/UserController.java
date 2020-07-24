@@ -5,14 +5,15 @@ import cn.com.seu.tonguetip.server.entity.User;
 import cn.com.seu.tonguetip.server.entity.UserCheck;
 import cn.com.seu.tonguetip.server.service.IUserCheckService;
 import cn.com.seu.tonguetip.server.service.IUserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import sun.applet.resources.MsgAppletViewer_es;
+
+import javax.jws.soap.SOAPBinding;
+import java.sql.Wrapper;
 
 /**
  * <p>
@@ -26,22 +27,35 @@ import sun.applet.resources.MsgAppletViewer_es;
 @RequestMapping("/profile")
 @CrossOrigin(origins = "*",allowCredentials = "true")
 public class UserController {
+
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IUserCheckService userCheckService;
+
     @RequestMapping(value="/login",method = RequestMethod.POST)
     public JSONObject loginUser(String userPhone,String userPassword,Integer userType){
         JSONObject jsonObj = new JSONObject();
         try{
-            if(userPhone==null||userPhone.equals(""))
+            if(userPhone == null || userPhone.equals(""))
             {
                 jsonObj.put("status","30002");
                 jsonObj.put("errmsg","用户电话号码为空");
                 return jsonObj;
             }
-            if(userPassword==null||userPassword.equals(""))
+            if(userPassword == null || userPassword.equals(""))
             {
                 jsonObj.put("status","30003");
                 jsonObj.put("errmsg","密码为空");
+                return jsonObj;
+            }
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.eq("PhoneNumber",userPhone);
+            wrapper.eq("Password",userPassword);
+            wrapper.eq("Type",userType);
+            if(userService.count(wrapper)==0) {
+                jsonObj.put("status",0);
                 return jsonObj;
             }
             User user =userService.getUser(userPhone,userPassword,userType);
@@ -56,10 +70,8 @@ public class UserController {
         }
         return jsonObj;
     }
-    @Autowired
-    private IUserCheckService userCheckService;
+
     @RequestMapping(value="/register",method = RequestMethod.POST)
-    //phone怎么判断
     public JSONObject registerUser(Integer userType,String userName,String userPhone,String userPassword,String repeatPassword,String picPath){
         JSONObject jsonObj = new JSONObject();
 

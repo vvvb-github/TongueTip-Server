@@ -21,4 +21,5 @@ public interface IHostService extends IService<Host> {
     List<Host> getRankList();
     void editHost(Integer hostID,String hostName,String phone,String location,String introduction,String picPath);
     String getLocation(Integer hostID);
+    void newHost(Integer userID);
 }

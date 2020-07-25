@@ -104,8 +104,10 @@ public class AdminController {
             File newFile = new File(path);
             multipartFile.transferTo(newFile);
             path = IP + "/images/" + uuid + suffixName;
+            jsonObject.put("status",1);
             jsonObject.put("url",path);
         }catch (Exception e){
+            jsonObject.put("status",0);
             jsonObject.put("errmsg",e.getMessage());
         }
         return jsonObject;

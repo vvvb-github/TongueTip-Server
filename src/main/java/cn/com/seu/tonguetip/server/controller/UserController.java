@@ -63,7 +63,7 @@ public class UserController {
             jsonObj.put("userID",user.getUserID());
             jsonObj.put("userName",user.getUserName());
             jsonObj.put("userPriority",user.getPriority());
-            jsonObj.put("IconPath",user.getIconPath());
+            jsonObj.put("iconPath",user.getIconPath());
         }catch (Exception ex){
             jsonObj.put("status",0);
             jsonObj.put("errmsg","用户登录失败");

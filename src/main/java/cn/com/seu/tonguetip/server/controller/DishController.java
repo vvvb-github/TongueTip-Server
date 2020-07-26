@@ -54,13 +54,8 @@ public class DishController {
                 temp.put("picPath", dish.getPicturePath());
                 tempList.add(temp);
             }
-            if (!tempList.isEmpty()) {
-                jsonObj.put("status", 1);
-                jsonObj.put("dishList", tempList);
-            } else {
-                jsonObj.put("status", 0);
-                jsonObj.put("errmsg", "无对应菜品");
-            }
+            jsonObj.put("status", 1);
+            jsonObj.put("dishList", tempList);
         } catch (Exception ex) {
             jsonObj.put("status", 0);
             jsonObj.put("errmsg", "无对应菜品");

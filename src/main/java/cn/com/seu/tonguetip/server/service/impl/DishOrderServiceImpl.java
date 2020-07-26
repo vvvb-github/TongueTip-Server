@@ -40,6 +40,7 @@ public class DishOrderServiceImpl extends ServiceImpl<DishOrderMapper, DishOrder
     public List<DishOrder> getUserOrder(Integer userID) {
         QueryWrapper<DishOrder> wrapper=new QueryWrapper<>();
         wrapper.eq("UserID",userID);
+        wrapper.ne("State",2);
         List<DishOrder> dishOrders=list(wrapper);
         return dishOrders;
     }
@@ -66,5 +67,13 @@ public class DishOrderServiceImpl extends ServiceImpl<DishOrderMapper, DishOrder
         dishOrder = getOne(wrapper);
         dishOrder.setState(newState);
         return update(dishOrder,wrapper);
+    }
+
+    @Override
+    public void deleteOrder(Integer userID) {
+        QueryWrapper<DishOrder> wrapper = new QueryWrapper<>();
+        wrapper.eq("UserID",userID);
+        wrapper.eq("State",2);
+        remove(wrapper);
     }
 }

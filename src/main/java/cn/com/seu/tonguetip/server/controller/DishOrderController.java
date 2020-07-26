@@ -76,7 +76,7 @@ public class DishOrderController {
         try {
             List<DishOrder> orderList = dishOrderService.getUserOrder(userID);
             List<JSONObject> tempList = new ArrayList<>();
-            if(!orderList.isEmpty()&&orderList!= null)
+            if(orderList!= null)
             {
                 for (DishOrder order : orderList) {
 
@@ -84,7 +84,7 @@ public class DishOrderController {
 
                     temp.put("date", order.getTime());
 
-                    Dish dish =dishService.searchHostID(order.getDishID());
+                    Dish dish = dishService.searchHostID(order.getDishID());
                     temp.put("dishName", dish.getDishName());
 
                     temp.put("number", order.getNumber());
@@ -115,7 +115,7 @@ public class DishOrderController {
         try {
             List<DishOrder> orderList = dishOrderService.getHostOrder(hostID);
             List<JSONObject> tempList = new ArrayList<>();
-            if(!orderList.isEmpty()&&orderList!= null)
+            if(orderList!= null)
             {
                 for (DishOrder order : orderList) {
 
@@ -154,9 +154,7 @@ public class DishOrderController {
         JSONObject jsonObj = new JSONObject();
         try {
             dishOrderService.changestate(orderID,newState);
-
-                jsonObj.put("status", 1);
-
+            jsonObj.put("status", 1);
         }
         catch (Exception ex) {
             jsonObj.put("status", 0);
@@ -164,5 +162,4 @@ public class DishOrderController {
         }
         return jsonObj;
     }
-
 }

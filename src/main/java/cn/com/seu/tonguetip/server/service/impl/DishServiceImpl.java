@@ -30,7 +30,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
 
     @Override
     public Dish getDetail(Integer dishID) {
-        QueryWrapper wrapper=new QueryWrapper();
+        QueryWrapper<Dish> wrapper=new QueryWrapper<>();
         wrapper.eq("DishID",dishID);
         Dish dish=getOne(wrapper);
         return dish;
@@ -57,7 +57,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
         if(imgList!=null&&imgList!="") {
             dish.setPicturePath(imgList);
         }
-        QueryWrapper wrapper=new QueryWrapper();
+        QueryWrapper<Dish> wrapper=new QueryWrapper<>();
         wrapper.eq("DishID",dishID);
         return update(dish,wrapper);
     }
@@ -65,7 +65,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
     @Override
     public Integer gethostID(Integer dishID)
     {
-        QueryWrapper wrapper = new QueryWrapper();
+        QueryWrapper<Dish> wrapper = new QueryWrapper<>();
         wrapper.eq("DishID",dishID);
         Dish dish = getOne(wrapper);
         return dish.getHostID();
@@ -73,8 +73,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
 
     @Override
     public List<Dish> getHotDish() {
-        QueryWrapper wrapper = new QueryWrapper();
-        List<Dish> dishList = list(wrapper);
+        List<Dish> dishList = list();
         List<Dish> ans = new ArrayList<>();
         for (Integer i = 0;i<10 && i< dishList.size();i++)
         {
@@ -92,7 +91,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
 
     @Override
     public Dish searchHostID(Integer dishID) {
-        QueryWrapper wrapper = new QueryWrapper();
+        QueryWrapper<Dish> wrapper = new QueryWrapper<>();
         wrapper.eq("DishID",dishID);
         Dish dish=getOne(wrapper);
         return dish;

@@ -50,6 +50,16 @@ public class UserController {
                 jsonObj.put("errmsg","密码为空");
                 return jsonObj;
             }
+            if(userType == 2){
+                QueryWrapper<User> wrap = new QueryWrapper<>();
+                wrap.eq("PhoneNumber",userPhone);
+                wrap.eq("Password",userPassword);
+                wrap.eq("Type",0);
+                if(userService.count(wrap) > 0) {
+                    jsonObj.put("status",2);
+                    return jsonObj;
+                }
+            }
             QueryWrapper<User> wrapper = new QueryWrapper<>();
             wrapper.eq("PhoneNumber",userPhone);
             wrapper.eq("Password",userPassword);

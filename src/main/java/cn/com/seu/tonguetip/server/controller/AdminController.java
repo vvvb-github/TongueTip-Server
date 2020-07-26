@@ -37,7 +37,7 @@ public class AdminController {
     @Autowired
     private IHostService hostService;
 
-    private String IP = "http://192.168.0.110";
+    private String IP = "http://39.98.127.39/group22";
 
     @RequestMapping(value = "/get",method = RequestMethod.GET)
     public JSONObject getChecks(){
@@ -47,8 +47,8 @@ public class AdminController {
             List<JSONObject> lst = new ArrayList<>();
             for (UserCheck check:checkList) {
                 JSONObject ck = new JSONObject();
-                ck.put("m_checkID",check.getCheckID());
-                ck.put("m_picPath",check.getPictruePath());
+                ck.put("checkID",check.getCheckID());
+                ck.put("picPath",check.getPictruePath());
                 lst.add(ck);
             }
             jsonObject.put("status",1);

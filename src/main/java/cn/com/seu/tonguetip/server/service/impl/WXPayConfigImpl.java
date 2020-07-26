@@ -1,4 +1,4 @@
-package cn.com.seu.tonguetip.pay.service;
+package cn.com.seu.tonguetip.server.service.impl;
 
 import com.github.wxpay.sdk.WXPayConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,6 @@ public class WXPayConfigImpl implements WXPayConfig {
 
     @Value("${spbill_create_ip}")
     private String spbillCreateIp;
-
 
     @Override
     public String getAppID() {

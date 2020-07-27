@@ -154,4 +154,23 @@ public class HomeController {
         }
         return jsonObj;
     }
+
+    @RequestMapping(value = "/hostbyid",method = RequestMethod.GET)
+    public JSONObject hostbyid(Integer hostID)
+    {
+        JSONObject jsonObj = new JSONObject();
+        try{
+            Host host = hostService.hostbyid(hostID);
+            jsonObj.put("status",1);
+            jsonObj.put("hostName",host.getHostName());
+            jsonObj.put("hostPhone",host.getPhoneNumber());
+            jsonObj.put("location",host.getLocation());
+            jsonObj.put("star",host.getStar());
+            jsonObj.put("picPath",host.getPicturePath());
+            jsonObj.put("introduction",host.getIntroduction());
+        }catch (Exception ex){
+            jsonObj.put("status",0);
+        }
+        return jsonObj;
+    }
 }

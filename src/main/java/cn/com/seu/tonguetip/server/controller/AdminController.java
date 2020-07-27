@@ -37,7 +37,7 @@ public class AdminController {
     @Autowired
     private IHostService hostService;
 
-    private String IP = "http://39.98.127.39/group22";
+    private String IP = "http://64.64.228.191";
 
     @RequestMapping(value = "/get",method = RequestMethod.GET)
     public JSONObject getChecks(){

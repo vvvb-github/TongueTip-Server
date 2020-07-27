@@ -4,6 +4,7 @@ package cn.com.seu.tonguetip.server.controller;
 import cn.com.seu.tonguetip.server.entity.Comment;
 import cn.com.seu.tonguetip.server.entity.Dish;
 import cn.com.seu.tonguetip.server.service.ICommentService;
+import cn.com.seu.tonguetip.server.service.IDishOrderService;
 import cn.com.seu.tonguetip.server.service.IDishService;
 import cn.com.seu.tonguetip.server.entity.User;
 import cn.com.seu.tonguetip.server.service.IUserService;
@@ -37,6 +38,8 @@ public class DishController {
     private ICommentService commentService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IDishOrderService dishOrderService;
 
     @RequestMapping(value="/get",method=RequestMethod.GET)
     public JSONObject checkDish(Integer hostID) {
@@ -52,6 +55,8 @@ public class DishController {
                 temp.put("star", dish.getStar());
                 temp.put("tags", dish.getTag());
                 temp.put("picPath", dish.getPicturePath());
+                temp.put("sales",dish.getSales());
+                temp.put("introduction",dish.getIntroduction());
                 tempList.add(temp);
             }
             jsonObj.put("status", 1);
@@ -140,10 +145,12 @@ public class DishController {
     }
 
     @RequestMapping(value="/addcomment",method= RequestMethod.POST)
-    public JSONObject addNewComment(Integer userID, String comment,Integer star,Integer dishID) {
+    public JSONObject addNewComment(Integer userID, String comment,Integer star,Integer dishID,String orderID) {
         JSONObject jsonObj = new JSONObject();
         try {
             boolean status = commentService.addComment(userID,comment,star,dishID);
+            dishService.addStar(dishID,star);
+            dishOrderService.changestate(orderID,3);
             if (status) {
                 jsonObj.put("status", 1);
             }

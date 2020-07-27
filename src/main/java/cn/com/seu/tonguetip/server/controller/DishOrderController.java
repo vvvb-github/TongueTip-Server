@@ -93,6 +93,7 @@ public class DishOrderController {
                     temp.put("orderID", order.getOrderID());
                     temp.put("image", dish.getPicturePath());
                     temp.put("PS", order.getPs());
+                    temp.put("state",order.getState());
                     tempList.add(temp);
                 }
                 jsonObj.put("status", 1);

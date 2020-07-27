@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,6 +35,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setContent(content);
         comment.setStar(Double.valueOf(star));
         comment.setDishID(dishID);
+        LocalDateTime time = LocalDateTime.now();
+        comment.setTime(time);
         return save(comment);
     }
 }

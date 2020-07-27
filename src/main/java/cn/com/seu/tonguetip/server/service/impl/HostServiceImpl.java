@@ -110,4 +110,21 @@ public class HostServiceImpl extends ServiceImpl<HostMapper, Host> implements IH
         host.setPicturePath("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595617094864&di=c14184908466a235d5215facc406a051&imgtype=0&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D2952589939%2C4283534615%26fm%3D214%26gp%3D0.jpg");
         save(host);
     }
+
+    @Override
+    public Host hostbyid(Integer hostID) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("HostID",hostID);
+        Host host = getOne(wrapper);
+        return host;
+    }
+
+    @Override
+    public void setStar(Integer hostID, double star) {
+        QueryWrapper wrapper = new QueryWrapper();
+        Host host = new Host();
+        host.setStar(star);
+        wrapper.eq("HostID",hostID);
+        update(host,wrapper);
+    }
 }

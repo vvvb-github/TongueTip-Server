@@ -3,8 +3,10 @@ package cn.com.seu.tonguetip.server.service.impl;
 import cn.com.seu.tonguetip.server.entity.Dish;
 import cn.com.seu.tonguetip.server.mapper.DishMapper;
 import cn.com.seu.tonguetip.server.service.IDishService;
+import cn.com.seu.tonguetip.server.service.IHostService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +22,10 @@ import java.util.List;
  */
 @Service
 public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements IDishService {
+
+    @Autowired
+    private IHostService hostService;
+
     @Override
     public List<Dish> getDishInfo(Integer hostID) {
         QueryWrapper<Dish> wrapper=new QueryWrapper<>();
@@ -95,5 +101,33 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
         wrapper.eq("DishID",dishID);
         Dish dish=getOne(wrapper);
         return dish;
+    }
+
+    @Override
+    public void addStar(Integer dishID, Integer star)
+    {
+        QueryWrapper<Dish> wrapper = new QueryWrapper<>();
+        wrapper.eq("DishID",dishID);
+        Dish dish = getOne(wrapper);
+        Integer Sales = dish.getSales();
+        double oldstar = dish.getStar();
+        Dish newdish = new Dish();
+        newdish.setStar((Sales*oldstar+star)/(Sales+1));
+        newdish.setSales(Sales+1);
+        QueryWrapper<Dish> wrapper1 = new QueryWrapper<>();
+        wrapper1.eq("DishID",dishID);
+        update(newdish,wrapper1);
+        Integer hostID = gethostID(dishID);
+        QueryWrapper<Dish> wrapper2 = new QueryWrapper<>();
+        wrapper2.eq("HostID",hostID);
+        List<Dish> dishes = list(wrapper2);
+        double s = 0;
+        double cnt = 0;
+        for (Dish i:dishes)
+        {
+            s+=i.getStar()*i.getSales();
+            cnt+=i.getSales();
+        }
+        hostService.setStar(hostID,s/cnt);
     }
 }

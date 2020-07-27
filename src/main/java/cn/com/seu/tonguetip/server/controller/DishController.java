@@ -82,7 +82,7 @@ public class DishController {
                     temp.put("ID", comment.getCommentID());
                     temp.put("Name", user.getUserName());
                     temp.put("Rate", comment.getContent());
-                    temp.put("Time", comment.getTime());
+                    temp.put("Time", comment.getTime().toString());
                     temp.put("Url", user.getIconPath());
                     temp.put("Star", comment.getStar());
                     tempList.add(temp);
@@ -100,6 +100,7 @@ public class DishController {
                 jsonObj.put("errmsg", "无详情");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             jsonObj.put("status", 0);
             jsonObj.put("errmsg", "无对应详情");
         }

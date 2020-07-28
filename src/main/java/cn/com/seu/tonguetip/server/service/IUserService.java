@@ -17,7 +17,7 @@ public interface IUserService extends IService<User> {
     User getUser(Integer userID);
     User getUser(String userPhone, String userPassword, Integer userType);
     User setUser(Integer userType, String userName, String userPhone, String userPassword);
-    boolean setUser_2(Integer userID,String userName,String userPhone,String userPassword,String picPath);
+    boolean setUser_2(Integer userID,Integer id,String arg);
     Integer getUserPro(Integer userID);
     void setUserPro1(Integer usesrID);
     boolean find(String userPhone,String password,Integer type);

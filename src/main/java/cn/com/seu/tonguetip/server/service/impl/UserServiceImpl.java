@@ -72,28 +72,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public boolean setUser_2(Integer userID,String userName, String userPhone, String userPassword, String picPath) {
+    public boolean setUser_2(Integer userID,Integer id,String arg) {
         User user=new User();
-        user.setUserID(userID);
-        user.setUserName(userName);
-        user.setPassword(userPassword);
+        if (id == 1)
+            user.setUserName(arg);
+        if (id == 2)
+        {
+            QueryWrapper wrapper1 = new QueryWrapper();
+            wrapper1.eq("PhoneNumber",arg);
+            if(count(wrapper1)>0)
+                return false;
+            user.setPhoneNumber(arg);
+        }
+        if (id == 3)
+            user.setPassword(arg);
+        if (id == 4)
+            user.setIconPath(arg);
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("UserID",userID);
-        User user1=getOne(wrapper);
-        QueryWrapper wrapper1 = new QueryWrapper();
-        wrapper1.eq("PhoneNumber",userPhone);
-        wrapper1.eq("Type",user1.getType());
-        if(count(wrapper1)>0) {
-            return false;
-        } else {
-            if(!(userPhone==null||userPhone.equals(""))) {
-                user.setPhoneNumber(userPhone);
-            }
-        }
-        if(!(picPath==null||picPath.equals(""))) {
-            user.setIconPath(picPath);
-        }
-        return update(user,wrapper);
+        update(user,wrapper);
+        return true;
     }
 
     @Override

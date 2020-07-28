@@ -152,19 +152,14 @@ public class UserController {
     }
 
     @RequestMapping(value="/edit",method = RequestMethod.POST)
-    public JSONObject editUser(Integer userID,String userName,String userPhone,String userPassword,String picPath)
+    public JSONObject editUser(Integer userID,Integer id,String arg)
     {
         JSONObject jsonObj = new JSONObject();
         try{
-            if(userService.setUser_2(userID,userName,userPhone,userPassword,picPath))
-            {
+            if(userService.setUser_2(userID,id,arg))
                 jsonObj.put("status",1);
-            }
             else
-            {
                 jsonObj.put("status",2);
-                return jsonObj;
-            }
         }catch (Exception ex){
             jsonObj.put("status",0);
         }

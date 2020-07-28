@@ -100,6 +100,7 @@ public class DishController {
                 jsonObj.put("errmsg", "无详情");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             jsonObj.put("status", 0);
             jsonObj.put("errmsg", "无对应详情");
         }

@@ -2,11 +2,9 @@ package cn.com.seu.tonguetip.server.controller;
 
 import cn.com.seu.tonguetip.server.entity.Dish;
 import cn.com.seu.tonguetip.server.entity.DishOrder;
-import cn.com.seu.tonguetip.server.service.IDishOrderService;
-import cn.com.seu.tonguetip.server.service.IDishService;
+import cn.com.seu.tonguetip.server.service.*;
 import cn.com.seu.tonguetip.server.service.impl.DishOrderServiceImpl;
 import cn.com.seu.tonguetip.server.service.impl.WXPayConfigImpl;
-import cn.com.seu.tonguetip.server.service.WXPayService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.wxpay.sdk.WXPayUtil;
 import net.sf.json.JSONObject;
@@ -41,6 +39,12 @@ public class WXPayController {
 
     @Autowired
     private WXPayConfigImpl config;
+
+    @Autowired
+    private IHostService hostService;
+
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping(value = "/codeurl",method = RequestMethod.POST)
     public JSONObject CodeUrl(Double price,String dishName,String orderID,Integer dishID,
@@ -132,6 +136,9 @@ public class WXPayController {
             DishOrder dishOrder = dishOrderService.getOne(wrapper);
             jsonObject.put("status",1);
             jsonObject.put("state",dishOrder.getState());
+            Integer hostID = dishOrderService.gethostID(orderID);
+            Integer userID = hostService.getUserID(hostID);
+            userService.setUserPro1(userID);
         }catch (Exception e){
             e.printStackTrace();
             jsonObject.put("status",0);

@@ -5,6 +5,7 @@ import cn.com.seu.tonguetip.server.entity.Dish;
 import cn.com.seu.tonguetip.server.entity.DishOrder;
 import cn.com.seu.tonguetip.server.service.IDishOrderService;
 import cn.com.seu.tonguetip.server.service.IDishService;
+import cn.com.seu.tonguetip.server.service.IUserService;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.ibatis.jdbc.Null;
@@ -37,6 +38,9 @@ public class DishOrderController {
 
     @Autowired
     private IDishService dishService;
+
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public JSONObject addOrder(Integer userID, Integer dishID, Integer number, Double prices, String orderID, String ps)
@@ -156,6 +160,11 @@ public class DishOrderController {
         try {
             dishOrderService.changestate(orderID,newState);
             jsonObj.put("status", 1);
+            if (newState == 1)
+            {
+                Integer userID = dishOrderService.getUserID(orderID);
+                userService.setUserPro1(userID);
+            }
         }
         catch (Exception ex) {
             jsonObj.put("status", 0);

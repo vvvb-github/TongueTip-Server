@@ -2,9 +2,11 @@ package cn.com.seu.tonguetip.server.service.impl;
 
 import cn.com.seu.tonguetip.server.entity.Host;
 import cn.com.seu.tonguetip.server.mapper.HostMapper;
+import cn.com.seu.tonguetip.server.service.IDishOrderService;
 import cn.com.seu.tonguetip.server.service.IHostService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +22,10 @@ import java.util.List;
  */
 @Service
 public class HostServiceImpl extends ServiceImpl<HostMapper, Host> implements IHostService {
+
+    @Autowired
+    private IDishOrderService dishOrderService;
+
     @Override
     public Host getHost(Integer hostID)
     {
@@ -47,10 +53,16 @@ public class HostServiceImpl extends ServiceImpl<HostMapper, Host> implements IH
     }
 
     @Override
-    public List<Host> getRecommentHost()
+    public List<Host> getRecommentHost(Integer userID)
     {
-        QueryWrapper wrapper = new QueryWrapper();
-        List<Host> hostList = list(wrapper);
+        List<Integer> hostidlist = dishOrderService.getRecommendHostID(userID);
+        List<Host> hostList = new ArrayList<>();
+        for (Integer i:hostidlist)
+        {
+            QueryWrapper wrapper = new QueryWrapper();
+            wrapper.eq("HostID",i);
+            hostList.add(getOne(wrapper));
+        }
         return hostList;
     }
 
@@ -126,5 +138,12 @@ public class HostServiceImpl extends ServiceImpl<HostMapper, Host> implements IH
         host.setStar(star);
         wrapper.eq("HostID",hostID);
         update(host,wrapper);
+    }
+
+    @Override
+    public Integer getUserID(Integer hostID) {
+        QueryWrapper wrapper  = new QueryWrapper();
+        wrapper.eq("HostID",hostID);
+        return getOne(wrapper).getUserID();
     }
 }

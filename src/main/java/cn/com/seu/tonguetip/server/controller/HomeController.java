@@ -36,7 +36,7 @@ public class HomeController {
     private IHostService hostService;
 
     @RequestMapping(value = "/get",method = RequestMethod.GET)
-    public JSONObject get()
+    public JSONObject get(Integer userID)
     {
         JSONObject jsonObj = new JSONObject();
         try{
@@ -55,7 +55,7 @@ public class HomeController {
                 lista.add(j);
             }
             jsonObj.put("hostList",lista);
-            List<Host> RecommendHost = hostService.getRecommentHost();
+            List<Host> RecommendHost = hostService.getRecommentHost(userID);
             List<JSONObject> listb = new ArrayList<>();
             for (Host i:RecommendHost)
             {

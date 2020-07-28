@@ -19,4 +19,7 @@ public interface IDishOrderService extends IService<DishOrder> {
     List<DishOrder> getHostOrder(Integer hostID);
     boolean changestate(String orderID,Integer newState);
     void deleteOrder(Integer userID);
+    List<Integer> getRecommendHostID(Integer userID);
+    Integer getUserID(String orderID);
+    Integer gethostID(String orderID);
 }

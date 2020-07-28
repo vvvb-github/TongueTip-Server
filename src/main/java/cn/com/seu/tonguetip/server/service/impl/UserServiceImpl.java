@@ -95,4 +95,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         return update(user,wrapper);
     }
+
+    @Override
+    public Integer getUserPro(Integer userID) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("UserID",userID);
+        Integer pro = getOne(wrapper).getPriority();
+        if (pro == 1)
+        {
+            User user = new User();
+            user.setPriority(0);
+            update(user,wrapper);
+        }
+        return pro;
+    }
+
+    @Override
+    public void setUserPro1(Integer userID) {
+        User user =new User();
+        user.setPriority(1);
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("UserID",userID);
+        update(user,wrapper);
+    }
+
+    @Override
+    public boolean find(String userPhone, String password,Integer type) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("PhoneNumber",userPhone);
+        wrapper.eq("Type",type);
+        if (count(wrapper) == 0)
+            return false;
+        else
+        {
+            User user = new User();
+            user.setPassword(password);
+            update(user,wrapper);
+            return true;
+        }
+    }
 }

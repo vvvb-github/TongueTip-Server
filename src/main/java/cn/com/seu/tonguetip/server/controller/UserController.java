@@ -110,14 +110,14 @@ public class UserController {
                 //System.out.println("44");
                 if(!user2.getPhoneNumber().equals("奶萌兔"))
                 {
-                    jsonObj.put("status","1");
+                    jsonObj.put("status",1);
                     jsonObj.put("userID",user2.getUserID());
                     jsonObj.put("userPriority",user2.getPriority());
                     jsonObj.put("iconPath",user2.getIconPath());
                 }
                 else
                 {
-                    jsonObj.put("status","0");
+                    jsonObj.put("status",0);
                     jsonObj.put("errmsg","顾客注册失败");
                     return jsonObj;
                 }
@@ -134,14 +134,14 @@ public class UserController {
                 if(!user3.getPhoneNumber().equals("奶萌兔"))
                 {
                     userCheckService.setUserCheck(user3.getUserID(),picPath);
-                    jsonObj.put("status","1");
+                    jsonObj.put("status",1);
                     jsonObj.put("userID",user3.getUserID());
                     jsonObj.put("userPriority",user3.getPriority());
                     jsonObj.put("iconPath",user3.getIconPath());
                 }
                 else
                 {
-                    jsonObj.put("status","0");
+                    jsonObj.put("status",0);
                     jsonObj.put("errmsg","商家注册失败");
                     return jsonObj;
                 }
@@ -158,16 +158,47 @@ public class UserController {
         try{
             if(userService.setUser_2(userID,userName,userPhone,userPassword,picPath))
             {
-                jsonObj.put("status","1");
+                jsonObj.put("status",1);
             }
             else
             {
-                jsonObj.put("status","2");
+                jsonObj.put("status",2);
                 return jsonObj;
             }
         }catch (Exception ex){
-            jsonObj.put("status","0");
+            jsonObj.put("status",0);
         }
         return jsonObj;
     }
+
+    @RequestMapping(value="/message",method = RequestMethod.GET)
+    public JSONObject message(Integer userID)
+    {
+        JSONObject jsonObj = new JSONObject();
+        try{
+            jsonObj.put("status",1);
+            jsonObj.put("have",userService.getUserPro(userID));
+            return jsonObj;
+        }catch (Exception ex){
+            jsonObj.put("status",0);
+        }
+        return jsonObj;
+    }
+
+    @RequestMapping(value="/find",method = RequestMethod.POST)
+    public JSONObject find(String userPhone, String password,Integer type)
+    {
+        JSONObject jsonObj = new JSONObject();
+        try{
+            if (userService.find(userPhone,password,type))
+                jsonObj.put("status",1);
+            else
+                jsonObj.put("status",2);
+            return jsonObj;
+        }catch (Exception ex){
+            jsonObj.put("status",0);
+        }
+        return jsonObj;
+    }
+
 }

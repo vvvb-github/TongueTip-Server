@@ -22,4 +22,5 @@ public interface IDishService extends IService<Dish> {
     List<Dish> getHotDish();
     Dish searchHostID(Integer dishID);
     void addStar(Integer dishID,Integer star);
+    void deleteDish(Integer dishID);
 }

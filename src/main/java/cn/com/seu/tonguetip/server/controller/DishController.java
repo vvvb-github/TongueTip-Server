@@ -165,5 +165,20 @@ public class DishController {
         }
         return jsonObj;
     }
+
+    @RequestMapping(value="/delete",method= RequestMethod.GET)
+    public JSONObject deleteDish(Integer dishID)
+    {
+        JSONObject jsonObj = new JSONObject();
+        try {
+            dishService.deleteDish(dishID);
+            dishOrderService.deleteDish(dishID);
+            commentService.deleteDish(dishID);
+            jsonObj.put("status",1);
+        } catch (Exception ex) {
+            jsonObj.put("status", 0);
+        }
+        return jsonObj;
+    }
 }
 

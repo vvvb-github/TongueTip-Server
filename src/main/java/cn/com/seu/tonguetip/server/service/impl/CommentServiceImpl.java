@@ -39,4 +39,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setTime(time);
         return save(comment);
     }
+
+    @Override
+    public void deleteDish(Integer dishID) {
+        QueryWrapper wrapper =  new QueryWrapper();
+        wrapper.eq("DishID",dishID);
+        remove(wrapper);
+    }
 }

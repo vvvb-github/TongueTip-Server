@@ -16,4 +16,5 @@ import java.util.List;
 public interface ICommentService extends IService<Comment> {
     List<Comment> getComments(Integer dishID);
     boolean addComment(Integer userID, String comment,Integer star,Integer dishID);
+    void deleteDish(Integer dishID);
 }

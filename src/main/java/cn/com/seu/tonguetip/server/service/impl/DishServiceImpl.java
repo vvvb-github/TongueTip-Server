@@ -130,4 +130,11 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
         }
         hostService.setStar(hostID,s/cnt);
     }
+
+    @Override
+    public void deleteDish(Integer dishID) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("DishID",dishID);
+        remove(wrapper);
+    }
 }

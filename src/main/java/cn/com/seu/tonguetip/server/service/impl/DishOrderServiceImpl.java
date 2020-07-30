@@ -136,4 +136,11 @@ public class DishOrderServiceImpl extends ServiceImpl<DishOrderMapper, DishOrder
         wrapper.eq("OrderID",orderID);
         return  getOne(wrapper).getHostID();
     }
+
+    @Override
+    public void deleteDish(Integer dishID) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("DishID",dishID);
+        remove(wrapper);
+    }
 }

@@ -22,4 +22,5 @@ public interface IDishOrderService extends IService<DishOrder> {
     List<Integer> getRecommendHostID(Integer userID);
     Integer getUserID(String orderID);
     Integer gethostID(String orderID);
+    void deleteDish(Integer dishID);
 }

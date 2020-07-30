@@ -41,7 +41,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public void deleteDish(Integer dishID) {
+    public void deleteDish(Integer dishID)
+    {
         QueryWrapper wrapper =  new QueryWrapper();
         wrapper.eq("DishID",dishID);
         remove(wrapper);

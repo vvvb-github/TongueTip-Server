@@ -5,8 +5,10 @@ import com.github.wxpay.sdk.WXPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class WXPayService {
@@ -14,9 +16,7 @@ public class WXPayService {
     @Autowired
     private WXPayConfigImpl config;
 
-    public String WXCodeUrl(Double price,
-                            String dishName,
-                            String orderID) throws Exception{
+    public String WXCodeUrl(Double price,Integer userID,String orderID) throws Exception{
         WXPay wxpay =  new WXPay(config);
 
         // 异步通知地址
@@ -24,7 +24,7 @@ public class WXPayService {
 
         Map<String, String> data = new HashMap<>();
         // 商品描述
-        data.put("body", dishName);
+        data.put("body", "舌尖");
         // 商户订单号
         data.put("out_trade_no", orderID);
         // 标价金额
@@ -32,7 +32,7 @@ public class WXPayService {
         Integer p = price.intValue();
         data.put("total_fee", p.toString());
         // 产品id
-        data.put("product_id", orderID);
+        data.put("product_id", userID.toString());
         // 终端IP:调用微信支付API服务器的IP地址
         String spbillCreateIp = config.getspbillCreateIp();
         data.put("spbill_create_ip", spbillCreateIp);

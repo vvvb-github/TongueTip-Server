@@ -53,7 +53,7 @@ public class AdminController {
             }
             jsonObject.put("status",1);
             jsonObject.put("checkList",lst);
-        }catch (Exception e){
+        } catch (Exception e){
             jsonObject.put("status",0);
             jsonObject.put("errmsg","获取审核列表失败");
         }

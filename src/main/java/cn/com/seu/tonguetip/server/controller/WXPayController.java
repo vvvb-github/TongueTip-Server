@@ -2,6 +2,7 @@ package cn.com.seu.tonguetip.server.controller;
 
 import cn.com.seu.tonguetip.server.entity.Dish;
 import cn.com.seu.tonguetip.server.entity.DishOrder;
+import cn.com.seu.tonguetip.server.entity.Params;
 import cn.com.seu.tonguetip.server.service.*;
 import cn.com.seu.tonguetip.server.service.impl.DishOrderServiceImpl;
 import cn.com.seu.tonguetip.server.service.impl.WXPayConfigImpl;
@@ -9,10 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.wxpay.sdk.WXPayUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,16 +45,22 @@ public class WXPayController {
     private IUserService userService;
 
     @RequestMapping(value = "/codeurl",method = RequestMethod.POST)
-    public JSONObject CodeUrl(Double price,String dishName,String orderID,Integer dishID,
-                              String PS,Integer userID,Integer number){
+    public JSONObject newOrder(@RequestBody Params params){
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(params);
         JSONObject jsonObject = new JSONObject();
+        Double prices = 0.0;
         try {
-            dishOrderService.deleteOrder(userID);
-            DishOrder dishOrder = dishOrderService.newDishOrder(userID,dishID,number,price,orderID,PS);
-            dishOrder.setHostID(dishService.gethostID(dishID));
-            dishOrder.setState(2);
-            dishOrderService.save(dishOrder);
-            String codeUrl = wxPayService.WXCodeUrl(price,dishName,orderID);
+            dishOrderService.deleteOrder(params.userID);
+            for(Integer i=0;i<params.cnt;++i) {
+                DishOrder dishOrder = dishOrderService.newDishOrder(params.userID, params.dishID[i],
+                        params.number[i], params.price[i], params.orderID[i], params.PS[i]);
+                dishOrder.setHostID(dishService.gethostID(params.dishID[i]));
+                dishOrder.setState(2);
+                dishOrderService.save(dishOrder);
+                prices += params.price[i];
+            }
+            String codeUrl = wxPayService.WXCodeUrl(prices,params.userID,params.orderID[0]);
             jsonObject.put("status",1);
             jsonObject.put("url",codeUrl);
         } catch (Exception e) {
@@ -85,7 +89,7 @@ public class WXPayController {
         System.out.println(strXml);
 
         // 获取业务信息
-        String orderID = map.get("out_trade_no");
+        Integer userID = Integer.valueOf(map.get("product_id"));
         String price = map.get("total_fee");
 
         // 验签
@@ -93,9 +97,13 @@ public class WXPayController {
 
         // 验证订单信息
         QueryWrapper<DishOrder> wrapper = new QueryWrapper<>();
-        wrapper.eq("OrderID",orderID);
-        DishOrder dishOrder = dishOrderService.getOne(wrapper);
-        Double p = dishOrder.getPrices() * 100;
+        wrapper.eq("UserID",userID);
+        wrapper.eq("State",2);
+        List<DishOrder> lst = dishOrderService.list(wrapper);
+        Double p = 0.0;
+        for(DishOrder order : lst){
+            p += order.getPrices();
+        }
         Integer i_p = p.intValue();
         if(!i_p.toString().equals(price)){
             signatureValid = false;
@@ -107,7 +115,9 @@ public class WXPayController {
             // 回调信息是否成功
             if ("SUCCESS".equals(map.get("result_code"))) {
                 // 补充以下代码, 根据实际业务完善逻辑
-                dishOrderService.changestate(orderID,0);
+                for(DishOrder order : lst){
+                    dishOrderService.changestate(order.getOrderID(),0);
+                }
 
                 System.out.println("********付款成功********");
                 // 通知微信订单处理成功
@@ -128,17 +138,14 @@ public class WXPayController {
     }
 
     @RequestMapping(value = "/state",method = RequestMethod.GET)
-    public JSONObject getOrderState(String orderID) {
+    public JSONObject getOrderState(Integer userID) {
         JSONObject jsonObject = new JSONObject();
         try {
             QueryWrapper<DishOrder> wrapper = new QueryWrapper<>();
-            wrapper.eq("OrderID", orderID);
-            DishOrder dishOrder = dishOrderService.getOne(wrapper);
+            wrapper.eq("UserID", userID);
+            wrapper.eq("State",2);
+            jsonObject.put("cnt",dishOrderService.count(wrapper));
             jsonObject.put("status",1);
-            jsonObject.put("state",dishOrder.getState());
-            Integer hostID = dishOrderService.gethostID(orderID);
-            Integer userID = hostService.getUserID(hostID);
-            userService.setUserPro1(userID);
         }catch (Exception e){
             e.printStackTrace();
             jsonObject.put("status",0);

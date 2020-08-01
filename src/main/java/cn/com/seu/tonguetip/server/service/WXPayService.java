@@ -32,6 +32,7 @@ public class WXPayService {
         Integer p = price.intValue();
         data.put("total_fee", p.toString());
         // 产品id
+        data.put("attach",userID.toString());
         data.put("product_id", userID.toString());
         // 终端IP:调用微信支付API服务器的IP地址
         String spbillCreateIp = config.getspbillCreateIp();

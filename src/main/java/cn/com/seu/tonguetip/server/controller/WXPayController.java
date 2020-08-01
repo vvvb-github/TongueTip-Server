@@ -38,16 +38,8 @@ public class WXPayController {
     @Autowired
     private WXPayConfigImpl config;
 
-    @Autowired
-    private IHostService hostService;
-
-    @Autowired
-    private IUserService userService;
-
     @RequestMapping(value = "/codeurl",method = RequestMethod.POST)
     public JSONObject newOrder(@RequestBody Params params){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(params);
         JSONObject jsonObject = new JSONObject();
         Double prices = 0.0;
         try {
@@ -89,7 +81,7 @@ public class WXPayController {
         System.out.println(strXml);
 
         // 获取业务信息
-        Integer userID = Integer.valueOf(map.get("product_id"));
+        Integer userID = Integer.valueOf(map.get("attach"));
         String price = map.get("total_fee");
 
         // 验签
@@ -100,14 +92,16 @@ public class WXPayController {
         wrapper.eq("UserID",userID);
         wrapper.eq("State",2);
         List<DishOrder> lst = dishOrderService.list(wrapper);
-        Double p = 0.0;
-        for(DishOrder order : lst){
-            p += order.getPrices();
-        }
-        Integer i_p = p.intValue();
-        if(!i_p.toString().equals(price)){
-            signatureValid = false;
-        }
+//        Double p = 0.0;
+//        for(DishOrder order : lst){
+//            p += order.getPrices();
+//        }
+//        Integer i_p = p.intValue();
+//        if(!i_p.toString().equals(price)){
+//            signatureValid = false;
+//        }
+        System.out.println("###########################################");
+        System.out.println(lst);
 
         PrintWriter writer = response.getWriter();
         // 签名是否正确
